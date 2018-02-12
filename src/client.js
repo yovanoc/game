@@ -71,6 +71,10 @@ export default class Client {
       this.log("Connection ended");
     });
 
+    this.socket.on("log", () => {
+      this.log("Log messages");
+    });
+
     this.socket.on("close", () => {
       this.log("Connection closed");
     });

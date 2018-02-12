@@ -21,6 +21,14 @@ export default class Server {
         this.log(`Error : ${error.message}`, spark.id);
       });
 
+      spark.on("readyStateChange", (state) => {
+        this.log(`Connection readyStateChange: ${state}`);
+      });
+
+      spark.on("heartbeat", () => {
+        this.log("We've received a response to a heartbeat.", spark.id);
+      });
+
       spark.on("end", () => {
         this.log("Disconnected", spark.id);
       });
@@ -48,6 +56,26 @@ export default class Server {
   events() {
     this.primus.on("initialised", () => {
       this.log("Initialised");
+    });
+
+    this.primus.on("connection", () => {
+      this.log("New connection");
+    });
+
+    this.primus.on("disconnection", () => {
+      this.log("disconnection");
+    });
+
+    this.primus.on("close", () => {
+      this.log("Closed");
+    });
+
+    this.primus.on("plugin", () => {
+      this.log("A new plugin has been added.");
+    });
+
+    this.primus.on("plugout", () => {
+      this.log("A plugin has been removed.");
     });
   }
 }
